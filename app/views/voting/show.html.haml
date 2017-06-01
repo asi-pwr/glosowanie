@@ -3,7 +3,7 @@
   = form_for @vote, url: { action: "vote" } do |f|
     = f.collection_select(:lecturer_id, Lecturer.all, :id, :full_name)
     = f.hidden_field(:token, value: @user.token)
-    = f.submit
+    = f.submit "Zagłosuj"
 - else
   %h1 Nie oszukuj :(
   %p Nie podałeś tokena upoważniającego Cię do głosowania albo został on zużyty.

@@ -12,6 +12,7 @@ class VotingController < ApplicationController
       @vote.user = @user
       @vote.lecturer = @lecturer
       @user.regenerate_token
+      @vote.save
       redirect_to thanks_url
     else
       flash[:alert] = "Brak tokena lub Twój token został już zużyty."
@@ -19,5 +20,5 @@ class VotingController < ApplicationController
     end
   end
 
-    def thanks; end
+  def thanks; end
 end
