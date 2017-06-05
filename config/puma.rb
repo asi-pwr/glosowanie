@@ -6,7 +6,7 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 
 pidfile "/home/quintasan/glosowanie/tmp/pids/puma.pid"
 state_path "/home/quintasan/glosowanie/tmp/pids/puma.state"
-stdout_redirect '/home/quintasan/glosowanie/log/puma.error.log', '/home/harex/harex/current/log/puma.access.log', true
+stdout_redirect '/home/quintasan/glosowanie/log/puma.error.log', '/home/quintasan/glosowanie/log/puma.access.log', true
 
 threads 2,4
 
