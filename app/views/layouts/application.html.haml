@@ -1,6 +1,8 @@
 !!!
 %html
   %head
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
+    %link{:href => "https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin-ext", :rel => "stylesheet"}/
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %title Glosowanie
     = csrf_meta_tags
@@ -9,4 +11,5 @@
   %body
     - flash.each do |key, value|
       %div{class: "alert alert-#{key}"}=value
-    = yield
+    .container
+      = yield

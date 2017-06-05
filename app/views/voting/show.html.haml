@@ -1,9 +1,54 @@
 - if @user
-  %h1 Głosowanie na Prowadzącego Roku 2017 na Wydziale Informatyki i Zarządzania
-  = form_for @vote, url: { action: "vote" } do |f|
-    = f.collection_select(:lecturer_id, Lecturer.all, :id, :full_name)
+  %header
+    .logo
+    %h1 Głosowanie na Prowadzącego Roku 2017 na Wydziale Informatyki i Zarządzania
+  %form#search-form.search-form
+    %input.search{:placeholder => "Szukajka..", :type => "search"}
+    %input.search-button{:type => "submit", :value => "Wyszukaj"}
+    %p#error.error
+      Nie udało się znaleźć takiego prowadzącego ;(
+  = form_for @vote, url: { action: "vote" }, html: { class: "new_vote", id: "new_vote" } do |f|
     = f.hidden_field(:token, value: @user.token)
+    %ul
+      = f.collection_radio_buttons(:lecturer_id, Lecturer.all, :id, :full_name) do |b|
+        %li
+          = b.radio_button
+          = b.label
+          .check
     = f.submit "Zagłosuj"
 - else
   %h1 Nie oszukuj :(
   %p Nie podałeś tokena upoważniającego Cię do głosowania albo został on zużyty.
+
+:javascript
+      document.getElementById("search-form").addEventListener("submit", function(evt){
+          evt.preventDefault();
+
+          var err = document.getElementById("error");
+          var found = document.querySelectorAll(".found");
+          err.classList.remove("is-active");
+          for(var i = 0; i<found.length; i++){
+              found[i].classList.remove("found");
+          }
+
+          var text = document.querySelector("input[type=search]").value.toLowerCase();
+          text = escapeDiacritics(text);
+          var elements = document.querySelectorAll("label");
+          var iserr = true;
+          if(text > ""){
+              for(var i=0; i<elements.length; i++){
+                  var el = elements[i];
+                  var txt  = el.innerHTML.toLowerCase();
+                  txt = escapeDiacritics(txt);
+                  if(txt.includes(text)){
+                      document.getElementById(el.getAttribute("for")).scrollIntoView();
+                      el.classList.add("found");
+                      iserr = false;
+                  }
+              }
+              if(iserr) document.getElementById("error").classList.add("is-active");
+          }else{document.getElementById("error").classList.add("is-active");}
+      }); 
+      function escapeDiacritics(str){
+          return str.replace(/ą/gi, 'a').replace(/ć/gi, 'c').replace(/ę/gi, 'e').replace(/ł/gi, 'l').replace(/ń/gi, 'n').replace(/ó/gi, 'o').replace(/ś/gi, 's').replace(/ż/gi, 'z').replace(/ź/gi, 'z');
+      }
